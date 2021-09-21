@@ -1,25 +1,8 @@
-// require = CommonJS
+// promise & async/await strategy
+
 const { expect } = require('@jest/globals');
-const timeout = require('./timeout');
 
-// callback strategy
-describe('asynchronous callback testing', () => {
-  test('it should return some data using a callback', (done) => {
-    function callback(data) {
-      try {
-        expect(data).toBe('done');
-        done();
-      } catch (error) {
-        done(error);
-      }
-    }
-
-    timeout(callback);
-  });
-});
-
-// callback strategy
-describe('asynchronous promise testing', () => {
+describe('fetch promise testing', () => {
   // data stub
   data = {
     userId: 1,
@@ -51,7 +34,7 @@ describe('asynchronous promise testing', () => {
     });
   });
 
-  test('it should call json function return the json', () => {
+  test('it should call json function which returns a promise that resolves to some json', () => {
     return fetch()
       .then((response) => {
         return response.json();
@@ -59,5 +42,12 @@ describe('asynchronous promise testing', () => {
       .then((json) => {
         expect(json.title).toBe('delectus aut autem');
       });
+  });
+
+  test('it should call fetch but this time using async/await to return the data', async () => {
+    const response = await fetch();
+    const json = await response.json();
+
+    expect(json.title).toBe('delectus aut autem');
   });
 });
