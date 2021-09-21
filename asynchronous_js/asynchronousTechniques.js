@@ -1,5 +1,3 @@
-import fetch from 'node-fetch';
-
 setTimeout(() => {
   console.log('first set timeout done');
   setTimeout(() => {
