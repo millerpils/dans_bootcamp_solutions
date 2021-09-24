@@ -1,5 +1,6 @@
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
+let client = null;
 
 const data = [
   {
@@ -34,10 +35,8 @@ async function start() {
 
     // connect to mongo
     await client.connect();
-    // remove the collection first
-    await client.db('pizzaDB').collection('pizzas').drop();
   } catch (e) {
-    throw new Error(e.message);
+    throw new Error('Error: ', e.message);
   }
 
   await queries().catch((err) => console.log('Error:', err.message));
@@ -45,6 +44,10 @@ async function start() {
 }
 
 async function queries() {
+  // drop the connection first
+  const pizzaCollection = await client.db('pizzaDB').collection('pizzas');
+  await pizzaCollection.drop();
+
   // CREATE
   await client.db('pizzaDB').collection('pizzas').insertMany(data);
 

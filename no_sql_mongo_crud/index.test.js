@@ -37,8 +37,9 @@ describe('pizzas CRUD', () => {
       // connect to mongo
       await client.connect();
 
-      // remove the collection first
-      await client.db('pizzaDB').collection('pizzas').drop();
+      // drop the connection first
+      const pizzaCollection = await client.db('pizzaDB').collection('pizzas');
+      await pizzaCollection.drop();
     } catch (e) {
       throw new Error('There was a problem connecting to or dropping the DB.');
     }
