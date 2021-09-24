@@ -38,9 +38,9 @@ describe('pizzas CRUD', () => {
       await client.connect();
 
       // remove the collection first
-      client.db('pizzaDB').collection('pizzas').drop();
+      await client.db('pizzaDB').collection('pizzas').drop();
     } catch (e) {
-      return console.log('Error:', e.message);
+      throw new Error('There was a problem connecting to or dropping the DB.');
     }
   });
 

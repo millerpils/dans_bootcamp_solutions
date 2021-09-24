@@ -34,8 +34,10 @@ async function start() {
 
     // connect to mongo
     await client.connect();
+    // remove the collection first
+    await client.db('pizzaDB').collection('pizzas').drop();
   } catch (e) {
-    return console.log('Error:', e.message);
+    throw new Error(e.message);
   }
 
   await queries().catch((err) => console.log('Error:', err.message));
@@ -43,9 +45,6 @@ async function start() {
 }
 
 async function queries() {
-  // remove the collection first
-  client.db('pizzaDB').collection('pizzas').drop();
-
   // CREATE
   await client.db('pizzaDB').collection('pizzas').insertMany(data);
 
@@ -74,4 +73,6 @@ async function queries() {
     .deleteOne({ name: 'The Spicy One' });
 }
 
-start().then(() => console.log('Database updated! :)'));
+start()
+  .then(() => console.log('Finished!'))
+  .catch((e) => console.log(e.message));
