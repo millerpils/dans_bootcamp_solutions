@@ -18,15 +18,20 @@ const data = [
     shape: 'rectangle',
     price: 6.99,
   },
+  {
+    name: 'Tuna and Sweetcorn',
+    shape: 'Oval',
+    price: 6.99,
+  },
 ];
 
 describe('pizzas CRUD', () => {
   beforeAll(async () => {
-    // Connection URI
+    // connection URI
     const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`;
 
     try {
-      // Create a new MongoClient
+      // create a new MongoClient
       client = new MongoClient(uri);
 
       // connect to mongo
@@ -49,7 +54,7 @@ describe('pizzas CRUD', () => {
       .collection('pizzas')
       .insertMany(data);
 
-    expect(result.insertedCount).toEqual(3);
+    expect(result.insertedCount).toBeGreaterThan(2);
   });
 
   test('it should find one from mongo', async () => {
