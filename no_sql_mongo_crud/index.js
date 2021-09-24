@@ -1,5 +1,5 @@
-const client = require('./mongo.client.js');
-const pizzas = client.db('pizzaDB').collection('pizzas');
+const { MongoClient } = require('mongodb');
+require('dotenv').config();
 
 const data = [
   {
@@ -17,35 +17,61 @@ const data = [
     shape: 'rectangle',
     price: 6.99,
   },
+  {
+    name: 'Tuna and Sweetcorn',
+    shape: 'Oval',
+    price: 6.99,
+  },
 ];
 
-client.connect(async (err) => {
-  if (err) throw err;
+async function start() {
+  // connection URI
+  const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`;
 
+  try {
+    // create a new MongoClient
+    client = new MongoClient(uri);
+
+    // connect to mongo
+    await client.connect();
+  } catch (e) {
+    return console.log('Error:', e.message);
+  }
+
+  await queries().catch((err) => console.log('Error:', err.message));
+  await client.close();
+}
+
+async function queries() {
   // remove the collection first
-  pizzas.drop();
+  client.db('pizzaDB').collection('pizzas').drop();
 
   // CREATE
-  const create = await pizzas.insertMany(data);
+  await client.db('pizzaDB').collection('pizzas').insertMany(data);
 
   // READ
-  const readOne = await pizzas.findOne({ name: 'Cheese and Tomato' });
+  await client
+    .db('pizzaDB')
+    .collection('pizzas')
+    .findOne({ name: 'Cheese and Tomato' });
 
   // READ
-  const readAll = await pizzas.find().toArray();
+  await client.db('pizzaDB').collection('pizzas').find().toArray();
 
   // UPDATE
-  const updateOne = await pizzas.updateOne(
-    { name: 'Cheese and Tomato' },
-    { $set: { name: 'Cheese and Pomodoro' } }
-  );
+  await client
+    .db('pizzaDB')
+    .collection('pizzas')
+    .updateOne(
+      { name: 'Cheese and Tomato' },
+      { $set: { name: 'Cheese and Pomodoro' } }
+    );
 
   // DELETE
-  const deleteOne = await pizzas.deleteOne({ name: 'The Spicy One' });
+  await client
+    .db('pizzaDB')
+    .collection('pizzas')
+    .deleteOne({ name: 'The Spicy One' });
+}
 
-  console.log(`CREATED ${create.insertedCount} record(s)`);
-  console.log('READ this object ', readOne);
-  console.log('READ these objects: ', readAll);
-  console.log(`UPDATED ${updateOne.modifiedCount} document`);
-  console.log(`DELETED ${deleteOne.deletedCount} document`);
-});
+start().then(() => console.log('Database updated! :)'));
