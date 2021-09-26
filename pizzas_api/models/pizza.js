@@ -6,8 +6,9 @@ const PizzaSchema = new Schema({
     type: String,
     required: true,
   },
-  shape: {
+  image: {
     type: String,
+    required: true,
   },
   price: {
     type: Number,
