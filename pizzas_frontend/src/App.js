@@ -2,88 +2,52 @@ import Navbar from './components/navbar';
 import Product from './components/product';
 import Footer from './components/footer';
 import React, { useEffect, useState } from 'react';
-
-const url = 'http://localhost:3001/api/pizzas';
+import post from './functions/post';
+import get from './functions/get';
+import update from './functions/update';
+import config from './config';
 
 function App() {
   //  [pizzas, setPizzas] = state value and a state updater function.
-  //  useState([]) array is initial value
-  const [pizzas, setPizzas] = useState([]);
-  const [pizzaToEdit, setPizzaToEdit] = useState({});
+  const [pizzas, setPizzas] = useState([]); // [] is initial value
+  const [pizzaToEdit, setPizzaToEdit] = useState({
+    _id: null,
+    name: null,
+    price: null,
+    image: null,
+  });
 
-  // useEffect is like componentDidMount
   useEffect(() => {
+    // useEffect is like componentDidMount
     getProducts();
-  }, []); // [] do something with the data AFTER async added
-
-  async function getProducts() {
-    try {
-      const response = await fetch(url, {
-        method: 'GET',
-        mode: 'cors',
-      });
-      const json = await response.json();
-      if (json.length > 0) {
-        return setPizzas(json);
-      }
-      setPizzas([]);
-    } catch (error) {
-      console.log('error', error);
-    }
-  }
+  }, []);
 
   async function postProduct(event) {
     event.preventDefault();
+    const newPizzas = await post(event);
+    setPizzas((prevPizzas) => [...prevPizzas, newPizzas]);
+  }
 
-    const data = {
-      name: event.target.name.value,
-      image: event.target.image.value,
-      price: parseFloat(event.target.price.value),
-    };
+  async function getProducts() {
+    const pizzas = await get();
+    if (pizzas.length > 0) return setPizzas(pizzas);
+    setPizzas([]);
+  }
 
-    const response = await fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    const json = await response.json();
-    setPizzas((prevPizzas) => [...prevPizzas, json]);
+  async function updateProduct(event) {
+    event.preventDefault();
+    await update(event);
+    getProducts();
   }
 
   async function deleteProduct(productId) {
-    await fetch(url + '/' + productId, {
-      method: 'DELETE',
-    });
-
+    await fetch(config.url + '/' + productId, { method: 'DELETE' });
     getProducts();
   }
 
   function editProduct(productId) {
     const product = pizzas.find((pizza) => pizza._id === productId);
     setPizzaToEdit(product);
-  }
-
-  async function updateProduct(event) {
-    event.preventDefault();
-
-    const data = {
-      name: event.target.name.value,
-      image: event.target.image.value,
-      price: parseFloat(event.target.price.value),
-    };
-
-    const response = await fetch(
-      url + '/' + event.target.getAttribute('data-id'),
-      {
-        method: 'PUT',
-        body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-
-    const json = await response.json();
-    console.log(json);
   }
 
   return (
@@ -119,7 +83,7 @@ function App() {
           <br />
           <div>
             <h2>Update a pizza</h2>
-            <form onSubmit={updateProduct} data-id={pizzaToEdit._id}>
+            <form onSubmit={updateProduct} data-productid={pizzaToEdit._id}>
               <input
                 type="text"
                 name="name"
