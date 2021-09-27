@@ -1,8 +1,10 @@
 function Product(props) {
-  function handleClick(event) {
+  function handleDelete(event) {
     const productId = event.target.getAttribute('data-id');
     props.deleteProduct(productId);
   }
+
+  function handleUpdate(event) {}
 
   return (
     <div className="product" data-cy="product">
@@ -12,8 +14,10 @@ function Product(props) {
       <ul></ul>
       <p>&pound;{props.data.price}</p>
       <div className="promo-blocks__actions">
-        <button>Edit</button>
-        <button data-id={props.data._id} onClick={handleClick}>
+        <button data-id={props.data._id} onClick={handleUpdate}>
+          Edit
+        </button>
+        <button data-id={props.data._id} onClick={handleDelete}>
           Delete
         </button>
       </div>

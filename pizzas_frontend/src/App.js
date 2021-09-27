@@ -1,7 +1,7 @@
 import Navbar from './components/navbar';
 import Product from './components/product';
 import Footer from './components/footer';
-import CreateForm from './components/createForm';
+import CreateOrUpdateForm from './components/createForm';
 import React, { useEffect, useState } from 'react';
 
 const url = 'http://localhost:3001/api/pizzas';
@@ -58,6 +58,9 @@ function App() {
       <main>
         <div className="container">
           <div className="promo-blocks">
+            {pizzas.length === 0 && (
+              <p>No pizzes to display. Please add some below...</p>
+            )}
             {pizzas.map((pizza) => (
               <Product
                 key={pizza._id}
@@ -67,7 +70,7 @@ function App() {
             ))}
           </div>
           <hr />
-          <CreateForm postProduct={postProduct} />
+          <CreateOrUpdateForm postProduct={postProduct} />
         </div>
       </main>
       <Footer />

@@ -14,11 +14,7 @@ function CreateForm(props) {
       <h2>Add a pizza</h2>
       <form onSubmit={submit}>
         <input type="text" name="name" placeholder="Hot 'n spicy" />
-        <input
-          type="text"
-          name="image"
-          placeholder="http://domain/pathtoimage.jpg"
-        />
+        <input type="text" name="image" placeholder="Image URL" />
         <input type="text" name="price" placeholder="9.99" />
         <button type="submit" className="button--anchor">
           Create
