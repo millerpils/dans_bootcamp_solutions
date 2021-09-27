@@ -58,7 +58,6 @@ function App() {
       <main>
         <div className="container">
           <div className="promo-blocks">
-            {console.log(pizzas.length)}
             {pizzas.map((pizza) => (
               <Product
                 key={pizza._id}
