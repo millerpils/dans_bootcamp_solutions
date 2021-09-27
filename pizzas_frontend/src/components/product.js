@@ -3,7 +3,9 @@ function Product(props) {
     props.deleteProduct(event.target.getAttribute('data-id'));
   }
 
-  function handleUpdate(event) {}
+  function handleUpdate(event) {
+    props.editProduct(event.target.getAttribute('data-id'));
+  }
 
   return (
     <div className="product" data-cy="product">
