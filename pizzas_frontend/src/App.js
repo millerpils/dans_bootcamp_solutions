@@ -13,26 +13,27 @@ function App() {
 
   // useEffect is like componentDidMount
   useEffect(() => {
-    async function fetchData() {
-      console.log(pizzas);
-      try {
-        const response = await fetch(url, {
-          method: 'GET',
-          mode: 'cors',
-        });
-        const json = await response.json();
-        if (json.length > 0) {
-          setPizzas(json);
-        }
-      } catch (error) {
-        console.log('error', error);
+    getProducts();
+  }, []);
+
+  async function getProducts() {
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+      });
+      const json = await response.json();
+      if (json.length > 0) {
+        return setPizzas(json);
       }
+
+      setPizzas([]);
+    } catch (error) {
+      console.log('error', error);
     }
+  }
 
-    fetchData();
-  }, []); // [] only rerun if var in here changes
-
-  async function submitForm(formData) {
+  async function postProduct(formData) {
     const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(formData),
@@ -40,7 +41,7 @@ function App() {
     });
 
     const json = await response.json();
-    setPizzas([...pizzas, json]);
+    setPizzas((prevPizzas) => [...prevPizzas, json]);
   }
 
   async function deleteProduct(productId) {
@@ -48,9 +49,7 @@ function App() {
       method: 'DELETE',
     });
 
-    const index = pizzas.findIndex((pizza) => pizza._id === productId);
-    pizzas.splice(index, 1);
-    pizzas.length > 0 ? setPizzas([pizzas]) : setPizzas([]);
+    getProducts();
   }
 
   return (
@@ -58,16 +57,18 @@ function App() {
       <Navbar />
       <main>
         <div className="container">
-          {pizzas.map((pizza) => (
-            <Product
-              key={pizza._id}
-              data={pizza}
-              deleteProduct={deleteProduct}
-            />
-          ))}
-
+          <div className="promo-blocks">
+            {console.log(pizzas.length)}
+            {pizzas.map((pizza) => (
+              <Product
+                key={pizza._id}
+                data={pizza}
+                deleteProduct={deleteProduct}
+              />
+            ))}
+          </div>
           <hr />
-          <CreateForm submitForm={submitForm} />
+          <CreateForm postProduct={postProduct} />
         </div>
       </main>
       <Footer />
