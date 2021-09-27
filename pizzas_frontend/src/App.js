@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import post from './functions/post';
 import get from './functions/get';
 import update from './functions/update';
-import config from './config';
+import del from './functions/delete';
 
 function App() {
   //  [pizzas, setPizzas] = state value and a state updater function.
@@ -41,7 +41,7 @@ function App() {
   }
 
   async function deleteProduct(productId) {
-    await fetch(config.url + '/' + productId, { method: 'DELETE' });
+    await del(productId);
     getProducts();
   }
 
