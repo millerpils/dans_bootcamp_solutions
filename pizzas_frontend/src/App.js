@@ -1,7 +1,9 @@
 import Navbar from './components/navbar';
 import Product from './components/product';
 import Footer from './components/footer';
-import CreateOrUpdateForm from './components/createForm';
+import CreateProductForm from './components/createForm';
+import EditForm from './components/editForm';
+
 import React, { useEffect, useState } from 'react';
 
 const url = 'http://localhost:3001/api/pizzas';
@@ -14,7 +16,7 @@ function App() {
   // useEffect is like componentDidMount
   useEffect(() => {
     getProducts();
-  }, []);
+  }, []); // [] do something with the data AFTER async added
 
   async function getProducts() {
     try {
@@ -70,7 +72,8 @@ function App() {
             ))}
           </div>
           <hr />
-          <CreateOrUpdateForm postProduct={postProduct} />
+          <CreateProductForm postProduct={postProduct} />
+          <EditForm />
         </div>
       </main>
       <Footer />

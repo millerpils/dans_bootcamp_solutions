@@ -1,7 +1,6 @@
 function Product(props) {
   function handleDelete(event) {
-    const productId = event.target.getAttribute('data-id');
-    props.deleteProduct(productId);
+    props.deleteProduct(event.target.getAttribute('data-id'));
   }
 
   function handleUpdate(event) {}
