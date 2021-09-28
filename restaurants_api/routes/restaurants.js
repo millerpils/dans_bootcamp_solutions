@@ -1,6 +1,6 @@
 const express = require('express');
 const Router = express.Router();
-const { Restaurant, Menu } = require('../models/models');
+const { Restaurant } = require('../models/models');
 
 // CREATE
 Router.post('/', async (req, res) => {
