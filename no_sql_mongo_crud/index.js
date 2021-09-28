@@ -38,8 +38,13 @@ async function main() {
   await client.connect();
   console.log('Connected successfully to server');
 
+  // db handle for convenience
   const db = client.db(dbName);
+
+  // find the collection
   const collection = db.collection('pizzas');
+
+  // drop collection so it's clean
   await collection.drop();
 
   // CREATE
