@@ -1,6 +1,14 @@
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
-let client = null;
+
+// Connection URL
+const url = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`;
+
+// Create client
+const client = new MongoClient(url);
+
+// Database Name
+const dbName = 'pizzasdb_mongoclient_crud';
 
 const data = [
   {
@@ -25,57 +33,41 @@ const data = [
   },
 ];
 
-async function start() {
-  // connection URI
-  const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`;
+async function main() {
+  // Use connect method to connect to the server
+  await client.connect();
+  console.log('Connected successfully to server');
 
-  try {
-    // create a new MongoClient
-    client = new MongoClient(uri);
-
-    // connect to mongo
-    await client.connect();
-  } catch (e) {
-    throw new Error('Error: ', e.message);
-  }
-
-  await queries().catch((err) => console.log('Error:', err.message));
-  await client.close();
-}
-
-async function queries() {
-  // drop the connection first
-  const pizzaCollection = await client.db('pizzaDB').collection('pizzas');
-  await pizzaCollection.drop();
+  //
+  const db = client.db(dbName);
+  const collection = db.collection('pizzas');
 
   // CREATE
-  await client.db('pizzaDB').collection('pizzas').insertMany(data);
+  await collection.insertMany(data);
 
   // READ
-  await client
-    .db('pizzaDB')
-    .collection('pizzas')
-    .findOne({ name: 'Cheese and Tomato' });
+  const read = await collection.findOne({ name: 'Cheese and Tomato' });
+  console.log(read);
 
-  // READ
-  await client.db('pizzaDB').collection('pizzas').find().toArray();
+  // READ ALL
+  const read_all = await collection.find({}).toArray();
+  console.log(read_all);
 
   // UPDATE
-  await client
-    .db('pizzaDB')
-    .collection('pizzas')
-    .updateOne(
-      { name: 'Cheese and Tomato' },
-      { $set: { name: 'Cheese and Pomodoro' } }
-    );
+  const update = await collection.updateOne(
+    { name: 'Cheese and Tomato' },
+    { $set: { name: 'Cheese and Pomodoro' } }
+  );
+  console.log(update);
 
   // DELETE
-  await client
-    .db('pizzaDB')
-    .collection('pizzas')
-    .deleteOne({ name: 'The Spicy One' });
+  const del = await collection.deleteOne({ name: 'The Spicy One' });
+  console.log(del);
+
+  return 'done.';
 }
 
-start()
-  .then(() => console.log('Finished!'))
-  .catch((e) => console.log(e.message));
+main()
+  .then(console.log)
+  .catch(console.error)
+  .finally(() => client.close());
