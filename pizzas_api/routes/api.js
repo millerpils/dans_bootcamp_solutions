@@ -20,6 +20,12 @@ Router.get('/pizzas/:id', async (req, res) => {
   res.send(result);
 });
 
+// READ
+Router.get('/pizzas/:id/toppings', async (req, res) => {
+  const result = await Pizza.findOne({ _id: req.params.id });
+  res.send(result.toppings);
+});
+
 // UPDATE
 Router.put('/pizzas/:id', async (req, res) => {
   const result = await Pizza.updateOne(

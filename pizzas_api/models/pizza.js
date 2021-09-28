@@ -14,6 +14,10 @@ const PizzaSchema = new Schema({
     type: Number,
     required: true,
   },
+  toppings: {
+    type: Array,
+    required: false,
+  },
 });
 
 const Pizza = mongoose.model('Pizza', PizzaSchema);
