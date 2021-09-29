@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "title": "Pizza menu",
+    "RestaurantId": 1
+  },
+  {
+    "id": 2,
+    "title": "Fish menu",
+    "RestaurantId": 2
+  }
+]

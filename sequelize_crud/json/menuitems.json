@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "name": "Tuna 'n Sweetcorn",
+    "price": 9.99,
+    "MenuId": 1
+  },
+  {
+    "id": 2,
+    "name": "Sea bass",
+    "price": 9.99,
+    "MenuId": 2
+  }
+]
