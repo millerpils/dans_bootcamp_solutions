@@ -13,6 +13,7 @@ const connection = new Sequelize('db', 'user', 'pass', {
   storage: './database/db.sqlite',
 });
 
+// define our models
 const Restaurant = connection.define('Restaurant', restaurantModel);
 const Menu = connection.define('Menu', menuModel);
 const MenuItem = connection.define('MenuItem', menuItemModel);
