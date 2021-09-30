@@ -17,6 +17,9 @@ app.use(express.static('public'));
 // support urlencoded bodies (e.g. form POST)
 app.use(express.urlencoded({ extended: true }));
 
+// support json body (e.g FETCH PUT)
+app.use(express.json());
+
 async function start() {
   await Restaurant.bulkCreate(_RESTAURANTS);
 

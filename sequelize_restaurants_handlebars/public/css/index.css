@@ -69,7 +69,7 @@ p {
 }
 
 a {
-  color: ivory;
+  color: #7e2811;
 }
 
 button {
@@ -123,6 +123,7 @@ button:hover,
 }
 
 .navbar__navigation a {
+  color: ivory;
   text-decoration: none;
   margin-right: 1rem;
 }
@@ -251,4 +252,10 @@ input {
   background-color: white;
   padding: 0.5rem;
   margin-right: 0.5rem;
+  margin-bottom: 1rem;
+  min-width: 25rem;
+}
+
+label {
+  display: block;
 }
