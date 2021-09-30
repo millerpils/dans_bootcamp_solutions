@@ -37,7 +37,7 @@ app.use('/restaurants', restaurantRoutes);
 // app.use('/api/menuitems', menuitemRoutes);
 
 app.get('/', (req, res) => {
-  res.render('layouts/main');
+  res.render('index');
 });
 
 app.listen(port, () => {

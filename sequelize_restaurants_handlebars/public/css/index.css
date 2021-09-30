@@ -58,7 +58,7 @@ body {
 h1,
 h2,
 h3 {
-  color: #45425a;
+  color: #333;
   font-family: 'Roboto';
   margin-top: 0.5rem;
 }
@@ -69,7 +69,7 @@ p {
 }
 
 a {
-  color: #acc12f;
+  color: ivory;
 }
 
 button {
@@ -124,9 +124,10 @@ button:hover,
 
 .navbar__navigation a {
   text-decoration: none;
+  margin-right: 1rem;
 }
 
-.navbar__navigation a.router-link-exact-active {
+.navbar__navigation a.active {
   text-decoration: underline;
 }
 
