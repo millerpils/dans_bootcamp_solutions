@@ -1,5 +1,7 @@
 // promise & async/await strategy
 
+// mocking fetch as it's a nag to run in Jest
+
 const { expect } = require('@jest/globals');
 
 describe('fetch promise testing', () => {
