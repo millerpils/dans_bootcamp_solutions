@@ -173,6 +173,7 @@ button {
 .promo-blocks__actions {
   display: flex;
   align-items: center;
+  margin-top: 1rem;
 }
 
 .heading__sub {

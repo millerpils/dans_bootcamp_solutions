@@ -3,8 +3,8 @@ const app = express();
 const port = 8001;
 const { connection } = require('./sequelize-connect');
 const restaurantRoutes = require('./routes/web/restaurants');
-// const menuRoutes = require('./routes/web/menu');
-// const menuitemRoutes = require('./routes/web/menuitem');
+const _RESTAURANTS = require('./json/restaurants.json');
+const { Restaurant } = require('./sequelize-connect');
 const handlebars = require('./handlebars');
 
 // set-up view "engine"
@@ -18,6 +18,8 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
 async function start() {
+  await Restaurant.bulkCreate(_RESTAURANTS);
+
   await connection.sync({
     logging: console.log,
     // force: true,

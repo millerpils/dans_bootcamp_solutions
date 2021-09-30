@@ -7,8 +7,8 @@ Router.get('/', async (req, res, next) => {
   try {
     const restaurants = await Restaurant.findAll({});
     res.render('restaurants', { restaurants });
-  } catch (e) {
-    return next(e);
+  } catch (error) {
+    return next(error);
   }
 });
 
@@ -19,8 +19,20 @@ Router.get('/:id', async (req, res, next) => {
       where: { id: req.params.id },
     });
     res.render('restaurant', { restaurant });
-  } catch (e) {
-    return next(e);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+// DELETE
+Router.delete('/:id', async (req, res, next) => {
+  try {
+    await Restaurant.destroy({
+      where: { id: req.params.id },
+    });
+    res.send('done')
+  } catch (error) {
+    return next(error);
   }
 });
 
