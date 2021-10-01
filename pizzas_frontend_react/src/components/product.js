@@ -1,11 +1,17 @@
+import { Link } from 'react-router-dom';
+
 function Product(props) {
   function handleDelete(event) {
-    props.deleteProduct(event.target.getAttribute('data-id'));
+    // props.deleteProduct(event.target.getAttribute('data-id'));
+    // call delete function here?
+    // redirect home?
   }
 
-  function handleUpdate(event) {
-    props.editProduct(event.target.getAttribute('data-id'));
-  }
+  // function handleUpdate(event) {
+  //   // props.editProduct(event.target.getAttribute('data-id'));
+  // }
+
+  const editUrl = '/pizzas/' + props.data._id + '/edit';
 
   return (
     <div className="product" data-cy="product">
@@ -15,9 +21,9 @@ function Product(props) {
       <ul></ul>
       <p>&pound;{props.data.price}</p>
       <div className="promo-blocks__actions">
-        <button data-id={props.data._id} onClick={handleUpdate}>
+        <Link to={editUrl} className="anchor--button">
           Edit
-        </button>
+        </Link>
         <button data-id={props.data._id} onClick={handleDelete}>
           Delete
         </button>
