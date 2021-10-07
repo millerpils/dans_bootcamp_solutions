@@ -6,7 +6,6 @@ import { useState, useEffect } from 'react';
 function UpdateProduct() {
   const [pizzaName, setPizzaName] = useState('');
   const [updated, setUpdated] = useState(false);
-
   const { pizzaId } = useParams();
 
   useEffect(() => {
