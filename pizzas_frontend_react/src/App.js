@@ -3,22 +3,16 @@ import Product from './components/product';
 import Footer from './components/footer';
 import React, { useEffect, useState } from 'react';
 // import post from './api/post';
-import getPizzas from './api/pizzas/get';
 // import update from './api/update';
 // import del from './api/delete';
+import getPizzas from './api/pizzas/get';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import UpdateProduct from './components/updateProduct';
 
 function App() {
-  //  [pizzas, setPizzas] = state value and a state updater function.
+  // state + state change function
   const [pizzas, setPizzas] = useState([]); // [] is initial value
-  // const [pizzaToEdit, setPizzaToEdit] = useState({
-  //   _id: null,
-  //   name: null,
-  //   price: null,
-  //   image: null,
-  // });
 
   useEffect(() => {
     getProducts();
@@ -29,27 +23,6 @@ function App() {
     if (pizzas.length > 0) return setPizzas(pizzas);
     setPizzas([]);
   }
-  // async function postProduct(event) {
-  //   event.preventDefault();
-  //   const newPizzas = await post(event);
-  //   setPizzas((prevPizzas) => [...prevPizzas, newPizzas]);
-  // }
-
-  // async function updateProduct(event) {
-  //   event.preventDefault();
-  //   await update(event);
-  //   getProducts();
-  // }
-
-  // async function deleteProduct(productId) {
-  //   await del(productId);
-  //   getProducts();
-  // }
-
-  // function editProduct(productId) {
-  //   const product = pizzas.find((pizza) => pizza._id === productId);
-  //   setPizzaToEdit(product);
-  // }
 
   function Home() {
     return (
