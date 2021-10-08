@@ -22,10 +22,6 @@ function AddProduct() {
 
     if (result.ok) {
       setUpdated(true);
-
-      setTimeout(() => {
-        setUpdated(false);
-      }, 2000);
     }
   }
 
