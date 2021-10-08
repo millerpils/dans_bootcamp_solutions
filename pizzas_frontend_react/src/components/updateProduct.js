@@ -1,22 +1,30 @@
 import { useParams } from 'react-router-dom';
-import updatePizza from '../api/pizzas/update';
-import getPizzas from '../api/pizzas/get';
+import ProductsAPI from '../api/ProductsAPI';
 import { useState, useEffect } from 'react';
 
 function UpdateProduct() {
-  const [pizzaName, setPizzaName] = useState('');
+  const [productName, setProductName] = useState('');
   const [updated, setUpdated] = useState(false);
-  const { pizzaId } = useParams();
+  const { productId } = useParams();
 
   useEffect(() => {
-    getPizzaName();
+    /**
+     * Get pizza name for display. Global state probs better here
+     *
+     */
+    async function getProductName() {
+      const product = await ProductsAPI.get(productId);
+      setProductName(product.name);
+    }
+
+    getProductName();
   });
 
-  async function getPizzaName() {
-    const pizza = await getPizzas(pizzaId);
-    setPizzaName(pizza.name);
-  }
-
+  /**
+   * Handle the form submit event
+   * @param {*} event
+   *
+   */
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -26,7 +34,7 @@ function UpdateProduct() {
       price: parseFloat(event.target.price.value),
     };
 
-    const result = await updatePizza(pizzaId, data);
+    const result = await ProductsAPI.update(productId, data);
 
     if (result.ok) {
       setUpdated(true);
@@ -39,7 +47,7 @@ function UpdateProduct() {
 
   return (
     <div>
-      <h2>Update: {pizzaName}</h2>
+      <h2>Update: {productName}</h2>
       <form onSubmit={handleSubmit}>
         <input type="text" name="name" required placeholder="Name" />
         <input type="text" name="image" required placeholder="Image URL" />
@@ -48,7 +56,9 @@ function UpdateProduct() {
           Update
         </button>
       </form>
-      {updated && <p>Updated!</p>}
+      <p className={`flag--paragraph ${updated ? 'active' : ''}`}>
+        {updated && <span>Updated!</span>}
+      </p>
     </div>
   );
 }

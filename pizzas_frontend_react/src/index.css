@@ -251,3 +251,11 @@ input {
   padding: 0.5rem;
   margin-right: 0.5rem;
 }
+
+.flag--paragraph {
+  visibility: hidden;
+}
+
+.flag--paragraph.active {
+  visibility: visible;
+}

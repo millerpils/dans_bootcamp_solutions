@@ -1,26 +1,36 @@
-import Product from './product';
+import Product from './Product';
 import React, { useEffect, useState } from 'react';
-import getPizzas from '../api/pizzas/get';
+import ProductsApi from '../api/ProductsAPI';
 
 export default function Home() {
   // state + state change function
-  const [pizzas, setPizzas] = useState([]); // [] is initial value
+  const [products, setProducts] = useState([]); // [] is initial value
 
   useEffect(() => {
-    getProducts();
+    let isSubscribed = true;
+
+    getProducts().then((products) =>
+      isSubscribed ? setProducts(products) : null
+    );
+
+    return () => (isSubscribed = false);
   }, []);
 
+  /**
+   * Gets products from API
+   *
+   * @returns Promise
+   */
   async function getProducts() {
-    const pizzas = await getPizzas(null);
-    if (pizzas.length > 0) return setPizzas(pizzas);
-    setPizzas([]);
+    const products = await ProductsApi.get(null);
+    return products;
   }
 
   return (
     <div className="promo-blocks">
-      {pizzas.length === 0 && <p>No pizzas to display. Please add some!</p>}
-      {pizzas.map((pizza) => (
-        <Product key={pizza._id} data={pizza} />
+      {products.length === 0 && <p>No pizzas to display. Please add some!</p>}
+      {products.map((prod) => (
+        <Product key={prod._id} data={prod} />
       ))}
     </div>
   );

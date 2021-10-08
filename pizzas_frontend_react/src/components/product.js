@@ -1,17 +1,24 @@
 import { Link } from 'react-router-dom';
+import ProductsAPI from '../api/ProductsAPI';
 
 function Product(props) {
-  function handleDelete(event) {
-    // props.deleteProduct(event.target.getAttribute('data-id'));
-    // call delete function here?
-    // redirect home?
+  /**
+   * Handle deletion of product
+   * @param {*} event
+   *
+   */
+  async function handleDelete(event) {
+    const productId = event.target.getAttribute('data-productid');
+    const response = ProductsAPI.del(productId);
+
+    response.then((res) => {
+      if (res.ok) {
+        document.location = '/';
+      }
+    });
   }
 
-  // function handleUpdate(event) {
-  //   // props.editProduct(event.target.getAttribute('data-id'));
-  // }
-
-  const editUrl = '/pizzas/' + props.data._id + '/edit';
+  const editUrl = '/products/' + props.data._id + '/edit';
 
   return (
     <div className="product" data-cy="product">
@@ -24,7 +31,7 @@ function Product(props) {
         <Link to={editUrl} className="anchor--button">
           Edit
         </Link>
-        <button data-id={props.data._id} onClick={handleDelete}>
+        <button data-productid={props.data._id} onClick={handleDelete}>
           Delete
         </button>
       </div>

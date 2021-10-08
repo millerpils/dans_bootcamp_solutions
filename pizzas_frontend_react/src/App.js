@@ -1,9 +1,9 @@
-import Navbar from './components/navbar';
-import Home from './components/home';
-import Footer from './components/footer';
-
+import Navbar from './components/Navbar';
+import Home from './components/Home';
+import Footer from './components/Footer';
+import AddProduct from './components/AddProduct';
+import UpdateProduct from './components/UpdateProduct';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import UpdateProduct from './components/updateProduct';
 
 function App() {
   return (
@@ -12,11 +12,17 @@ function App() {
         <Navbar />
         <main>
           <div className="container">
+            <p>
+              <a href="/products/add">Add a product</a>
+            </p>
             <Switch>
               <Route exact path="/">
                 <Home />
               </Route>
-              <Route path="/pizzas/:pizzaId/edit">
+              <Route path="/products/add">
+                <AddProduct />
+              </Route>
+              <Route path="/products/:productId/edit">
                 <UpdateProduct />
               </Route>
             </Switch>
