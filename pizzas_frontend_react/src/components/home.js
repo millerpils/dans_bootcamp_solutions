@@ -3,8 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ProductsApi from '../api/ProductsAPI';
 
 export default function Home() {
-  // state + state change function
-  const [products, setProducts] = useState([]); // [] is initial value
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     let isSubscribed = true;

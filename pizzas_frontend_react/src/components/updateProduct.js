@@ -8,17 +8,23 @@ function UpdateProduct() {
   const { productId } = useParams();
 
   useEffect(() => {
-    /**
-     * Get pizza name for display. Global state probs better here
-     *
-     */
-    async function getProductName() {
-      const product = await ProductsAPI.get(productId);
-      setProductName(product.name);
-    }
+    let isSubscribed = true;
 
-    getProductName();
+    getProductById().then((product) =>
+      isSubscribed ? setProductName(product.name) : null
+    );
+
+    return () => (isSubscribed = false);
   });
+
+  /**
+   *
+   * @returns Promise
+   */
+  async function getProductById() {
+    const product = await ProductsAPI.get(productId);
+    return product;
+  }
 
   /**
    * Handle the form submit event
