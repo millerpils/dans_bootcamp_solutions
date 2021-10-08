@@ -28,11 +28,12 @@ Router.get('/pizzas/:id/toppings', async (req, res) => {
 
 // UPDATE
 Router.put('/pizzas/:id', async (req, res) => {
+  console.log(req.body);
   const result = await Pizza.updateOne(
     { _id: req.params.id },
     {
       name: req.body.name,
-      shape: req.body.shape,
+      image: req.body.image,
       price: req.body.price,
     }
   );
