@@ -1,3 +1,15 @@
+/*
+
+TODO:
+
+- Better errror handling. Return error message to component to render
+- useContext for global state to avoid too many API requests
+- Fix warning "Can't perform a React state update on an unmounted component"
+- Validate the forms using Formik/Yup
+- Test using react testing lib
+
+*/
+
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Footer from './components/Footer';
