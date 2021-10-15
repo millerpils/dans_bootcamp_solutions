@@ -12,6 +12,9 @@ app.use(cors());
 // parse req body
 app.use(express.json());
 
+// support urlencoded bodies (e.g. form POST)
+app.use(express.urlencoded({ extended: true }));
+
 // connect to mongo
 mongoose.connect(
   `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`,
