@@ -5,8 +5,8 @@ const { Restaurant } = require('../models/models');
 // CREATE
 Router.post('/', async (req, res) => {
   try {
-    const result = await Restaurant.create(req.body);
-    res.send(result);
+    await Restaurant.create(req.body);
+    res.send('done');
   } catch (error) {
     res.status(400).send(error.message);
   }
