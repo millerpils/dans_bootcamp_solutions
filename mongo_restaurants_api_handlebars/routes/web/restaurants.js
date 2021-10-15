@@ -30,14 +30,17 @@ Router.get('/new', (req, res) => {
 
 // CREATE
 Router.post('/', async (req, res, next) => {
-  console.log(req.body);
+  console.log(JSON.stringify(req.body));
 
   try {
-    const restaurants = await fetch(url, {
+    await fetch(url, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
       body: JSON.stringify(req.body),
     });
-    console.log(restaurants);
     res.redirect('/restaurants');
   } catch (e) {
     return next(error);
@@ -47,10 +50,10 @@ Router.post('/', async (req, res, next) => {
 // READ
 Router.get('/', async (req, res, next) => {
   try {
-    const restaurants = await fetch(url, {
+    const response = await fetch(url, {
       method: 'GET',
     });
-    console.log(restaurants);
+    const restaurants = await response.json();
     res.render('restaurants', { restaurants });
   } catch (error) {
     return next(error);
