@@ -1,16 +1,27 @@
 <h2>Update {{restaurant.name}}</h2>
 
-<form id="updateRestaurantForm">
-  <input type="hidden" name="restaurantId" value="{{restaurant.id}}" />
+<form id='updateRestaurantForm'>
+  <input type='hidden' name='restaurantId' value='{{restaurant._id}}' />
   <div>
-    <label for="name">Name</label><br>
-    <input type="text" name="name" id="name" placeholder="{{restaurant.name}}" />
+    <label for='name'>Name</label><br />
+    <input
+      type='text'
+      name='name'
+      id='name'
+      placeholder='{{restaurant.name}}'
+    />
   </div>
   <div>
-    <label for="imagelink">Image link</label><br>
-    <input type="text" name="imagelink" id="imagelink" placeholder="{{restaurant.imagelink}}" required />
+    <label for='imagelink'>Image link</label><br />
+    <input
+      type='text'
+      name='imagelink'
+      id='imagelink'
+      placeholder='{{restaurant.imagelink}}'
+      required
+    />
   </div>
-  <button type="submit" class="button--anchor">
+  <button type='submit' class='button--anchor'>
     Submit
   </button>
 </form>
@@ -19,4 +30,3 @@
   const form = document.getElementById("updateRestaurantForm")
   form.addEventListener("submit", updateRestaurant)
 </script>
-
