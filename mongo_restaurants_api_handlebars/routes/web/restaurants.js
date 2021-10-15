@@ -3,6 +3,9 @@ const Router = express.Router();
 const fetch = require('node-fetch');
 const url = 'http://localhost:3001/api/restaurants';
 
+// add confgi with url
+// fix update and edit
+
 // ADD NEW PAGE
 Router.get('/new', (req, res) => {
   res.render('newRestaurant');
@@ -30,14 +33,11 @@ Router.get('/new', (req, res) => {
 
 // CREATE
 Router.post('/', async (req, res, next) => {
-  console.log(JSON.stringify(req.body));
-
   try {
     await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // 'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: JSON.stringify(req.body),
     });
@@ -60,24 +60,29 @@ Router.get('/', async (req, res, next) => {
   }
 });
 
-// // READ
-// Router.get('/:id', async (req, res, next) => {
-//   try {
-//     const restaurant = await api.getOne(req.params.id)
-//     res.render('restaurant', { restaurant })
-//   } catch (error) {
-//     return next(error);
-//   }
-// });
+// READ
+Router.get('/:id', async (req, res, next) => {
+  try {
+    const response = await fetch(url + '/' + req.params.id, {
+      method: 'GET',
+    });
+    const restaurant = await response.json();
+    res.render('restaurant', { restaurant });
+  } catch (error) {
+    return next(error);
+  }
+});
 
-// // DELETE
-// Router.delete('/:id', async (req, res, next) => {
-//   try {
-//     await api.deleteOne(req.params.id)
-//     res.send('done')
-//   } catch (error) {
-//     return next(error);
-//   }
-// });
+// DELETE
+Router.delete('/:id', async (req, res, next) => {
+  try {
+    const response = await fetch(url + '/' + req.params.id, {
+      method: 'DELETE',
+    });
+    res.send('done');
+  } catch (error) {
+    return next(error);
+  }
+});
 
 module.exports = Router;
