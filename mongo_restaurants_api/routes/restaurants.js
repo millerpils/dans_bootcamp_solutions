@@ -58,6 +58,7 @@ Router.get('/:id', async (req, res) => {
 
 // UPDATE
 Router.put('/:id', async (req, res) => {
+  console.log(req.body);
   try {
     const result = await Restaurant.updateOne(
       { _id: req.params.id },
