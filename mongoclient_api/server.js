@@ -1,42 +1,27 @@
 const express = require('express');
 const app = express();
-const { MongoClient } = require('mongodb');
-require('dotenv').config();
+const dbStart = require('./database');
 let collection = null;
-
-app.listen(3002, () => {
-  console.log('Connected on 3002');
-});
-
-app.get('/', async (req, res) => {
-  const result = await collection.findOne({ name: 'Cheese and Pomodoro' });
-  res.send(result);
-});
-
-// Connection URL
-const url = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`;
-
-// Create client
-const client = new MongoClient(url);
+const port = 3002;
 
 // Database Name
 const dbName = 'pizzasdb_mongoclient_crud';
 
-async function main() {
-  try {
-    // Use connect method to connect to the server
-    await client.connect();
+app.listen(port, () => {
+  console.log(`Connected on ${port}`);
+});
 
-    // db handle for convenience
-    const db = client.db(dbName);
+app.get('/', async (req, res) => {
+  const results = await collection.find({}).toArray();
+  res.send(results);
+});
 
-    // find the collection
-    collection = db.collection('pizzas');
+dbStart().then((client) => {
+  // db handle for convenience
+  const db = client.db(dbName);
 
-    return 'Connected successfully to server';
-  } catch (e) {
-    console.log(e.message);
-  }
-}
+  // find the collection
+  collection = db.collection('pizzas');
 
-main().then(console.log).catch(console.error);
+  console.log('Connected to Mongo Atlas');
+});
