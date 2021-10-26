@@ -4,9 +4,6 @@ const { connection } = require('./sequelize-connect');
 const restaurant = require('./resources/restaurant');
 const menu = require('./resources/menu');
 const menuItem = require('./resources/menuitem');
-let theRestaurant,
-  theMenu,
-  theMenuItem = null;
 
 async function start() {
   await connection.sync({
@@ -20,15 +17,24 @@ start()
     console.log('Sequelize connected');
     return createTables();
   })
-  .then(() => {
+  .then((objects) => {
     console.log('Tables created');
-    runQueries();
+    runQueries(objects);
   })
   .catch((e) => console.log(e));
 
-async function runQueries() {
-  await restaurant.get(); // get all restaurants
-  await menu.get(theRestaurant); // get all menus that belong to a restaurant
+/**
+ * A space to run any queries
+ * @param [] array of objects
+ */
+async function runQueries(objects) {
+  [theRestaurant] = objects;
+
+  const results = await restaurant.get(); // get all restaurants
+  const result = await menu.get(theRestaurant); // get all menus that belong to a restaurant
+
+  console.log(`Found all restos: ${JSON.stringify(results)}`);
+  console.log(`Found one resto: ${JSON.stringify(result)}`);
 
   // update the restuarant
   await restaurant.update(theRestaurant, {
@@ -40,13 +46,19 @@ async function runQueries() {
   //await restaurant.del(theRestaurant);
 }
 
+/**
+ * Creates the instances and tables
+ * @returns array of objects
+ */
 async function createTables() {
   // create the objects (and tables!)
-  theRestaurant = await restaurant.create();
-  theMenu = await menu.create();
-  theMenuItem = await menuItem.create();
+  const theRestaurant = await restaurant.create();
+  const theMenu = await menu.create();
+  const theMenuItem = await menuItem.create();
 
   // add the associations (foreign keys)
   await theRestaurant.addMenu(theMenu);
   await theMenu.addMenuItem(theMenuItem);
+
+  return [theRestaurant, theMenu, theMenuItem];
 }

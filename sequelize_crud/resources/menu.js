@@ -8,10 +8,9 @@ const menu = {
    */
   get: async function (restaurant) {
     try {
-      const menus = await restaurant.getMenus();
-      console.log(`Found ${JSON.stringify(menus)}`);
+      return await restaurant.getMenus();
     } catch (e) {
-      console.log(e);
+      throw new Error(e.message);
     }
   },
 
@@ -22,11 +21,13 @@ const menu = {
    * @returns the newly create menu
    */
   create: async function () {
-    const menu = await Menu.create({
-      title: 'Pizza menu',
-    });
-
-    return menu;
+    try {
+      return await Menu.create({
+        title: 'Pizza menu',
+      });
+    } catch (e) {
+      throw new Error(e.message);
+    }
   },
 };
 

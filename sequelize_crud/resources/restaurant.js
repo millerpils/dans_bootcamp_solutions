@@ -7,12 +7,10 @@ const restaurant = {
    */
   create: async function () {
     try {
-      const restaurant = await Restaurant.create({
+      return await Restaurant.create({
         name: 'Pizza Hut',
         imagelink: 'http://domain.myimagelink.jpg',
       });
-
-      return restaurant;
     } catch (e) {
       console.log(e);
     }
@@ -23,10 +21,9 @@ const restaurant = {
    */
   get: async function () {
     try {
-      const restaurants = await Restaurant.findAll({});
-      console.log(`Found ${JSON.stringify(restaurants)}`);
+      return await Restaurant.findAll({});
     } catch (e) {
-      console.log(e);
+      throw new Error(e.message);
     }
   },
 
@@ -43,7 +40,7 @@ const restaurant = {
       });
       console.log(`Deleted`);
     } catch (e) {
-      console.log(e);
+      throw new Error(e.message);
     }
   },
 
@@ -61,7 +58,7 @@ const restaurant = {
       });
       console.log(`Updated`);
     } catch (e) {
-      console.log(e);
+      throw new Error(e.message);
     }
   },
 };

@@ -8,12 +8,14 @@ const menuItem = {
    * @returns menuItem
    */
   create: async function () {
-    const menuItem = await MenuItem.create({
-      name: 'Pizza',
-      price: 6.99,
-    });
-
-    return menuItem;
+    try {
+      return await MenuItem.create({
+        name: 'Pizza',
+        price: 6.99,
+      });
+    } catch (e) {
+      throw new Error(e.message);
+    }
   },
 };
 
