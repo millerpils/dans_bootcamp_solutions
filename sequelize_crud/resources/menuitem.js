@@ -7,7 +7,7 @@ const menuItem = {
    * @param {} menu object
    * @returns menuItem
    */
-  create: async function (menu) {
+  create: async function () {
     const menuItem = await MenuItem.create({
       name: 'Pizza',
       price: 6.99,

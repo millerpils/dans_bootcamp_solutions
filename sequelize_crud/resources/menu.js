@@ -21,7 +21,7 @@ const menu = {
    * @param {} restaurant object
    * @returns the newly create menu
    */
-  create: async function (restaurant) {
+  create: async function () {
     const menu = await Menu.create({
       title: 'Pizza menu',
     });
