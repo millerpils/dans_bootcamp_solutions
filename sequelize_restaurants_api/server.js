@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 8001;
+const port = 3001;
 const _RESTAURANTS = require('./json/restaurants.json');
 const _MENUS = require('./json/menus.json');
 const _MENUITEMS = require('./json/menuitems.json');
