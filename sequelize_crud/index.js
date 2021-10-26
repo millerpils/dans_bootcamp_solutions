@@ -1,3 +1,5 @@
+// https://sequelize.org/master/manual/assocs.html
+
 const { connection } = require('./sequelize-connect');
 const restaurant = require('./resources/restaurant');
 const menu = require('./resources/menu');
@@ -25,11 +27,24 @@ async function create() {
   const theMenu = await menu.create(theRestaurant);
 
   // create a menu item and assign to a menu
-  await menuItem.create(theMenu);
+  const theMenuItem = await menuItem.create(theMenu);
+
+  // add the associations
+  await theRestaurant.addMenu(theMenu);
+  await theMenu.addMenuItem(theMenuItem);
 
   // get all restaurants
   await restaurant.get();
 
   // get all menus that belong to a restaurant
   await menu.get(theRestaurant);
+
+  // update the restuarant
+  await restaurant.update(theRestaurant, {
+    name: 'New name',
+    imagelink: 'Some new image',
+  });
+
+  // delete the restaurant
+  //await restaurant.del(theRestaurant);
 }

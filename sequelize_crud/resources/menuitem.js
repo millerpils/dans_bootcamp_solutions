@@ -13,8 +13,6 @@ const menuItem = {
       price: 6.99,
     });
 
-    await menu.addMenuItem(menuItem);
-
     return menuItem;
   },
 };

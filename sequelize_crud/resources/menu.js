@@ -26,7 +26,6 @@ const menu = {
       title: 'Pizza menu',
     });
 
-    await restaurant.addMenu(menu);
     return menu;
   },
 };
