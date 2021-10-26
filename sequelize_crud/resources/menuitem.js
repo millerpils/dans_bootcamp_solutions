@@ -1,18 +1,21 @@
 const { MenuItem } = require('../sequelize-connect');
 
 const menuItem = {
-  create: async function () {
-    try {
-      const result = await MenuItem.create({
-        name: 'Pizza',
-        price: 9.99,
-        MenuId: 1,
-      });
+  /**
+   * Creates a menu item and assigns it to a menu
+   *
+   * @param {} menu object
+   * @returns menuItem
+   */
+  create: async function (menu) {
+    const menuItem = await MenuItem.create({
+      name: 'Pizza',
+      price: 6.99,
+    });
 
-      console.log(result);
-    } catch (e) {
-      console.log(e);
-    }
+    await menu.addMenuItem(menuItem);
+
+    return menuItem;
   },
 };
 

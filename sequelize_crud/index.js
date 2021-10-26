@@ -6,7 +6,7 @@ const menuItem = require('./resources/menuitem');
 async function start() {
   await connection.sync({
     logging: console.log,
-    // force: true,
+    force: true,
   });
 }
 
@@ -18,7 +18,18 @@ start()
   .catch((e) => console.log(e));
 
 async function create() {
-  await restaurant.create();
-  await menu.create();
-  await menuItem.create();
+  // create the restaurant
+  const theRestaurant = await restaurant.create();
+
+  // create the menu and assign it to the restaurant
+  const theMenu = await menu.create(theRestaurant);
+
+  // create a menu item and assign to a menu
+  await menuItem.create(theMenu);
+
+  // get all restaurants
+  await restaurant.get();
+
+  // get all menus that belong to a restaurant
+  await menu.get(theRestaurant);
 }
