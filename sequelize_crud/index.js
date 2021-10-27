@@ -11,7 +11,7 @@ const menuItem = require('./resources/menuitem');
 async function main() {
   try {
     await start();
-    const objects = await createTables();
+    const objects = await createRows();
     await runQueries(objects);
   } catch (e) {
     throw new Error(e.message);
@@ -35,8 +35,8 @@ async function start() {
  * Creates the instances and tables
  * @returns array of objects
  */
-async function createTables() {
-  // create the objects (and tables!)
+async function createRows() {
+  // create the objects and rows
   const theRestaurant = await restaurant.create();
   const theMenu = await menu.create();
   const theMenuItem = await menuItem.create();
