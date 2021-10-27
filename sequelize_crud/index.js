@@ -5,45 +5,30 @@ const restaurant = require('./resources/restaurant');
 const menu = require('./resources/menu');
 const menuItem = require('./resources/menuitem');
 
+/**
+ * Runs all the functions
+ */
+async function main() {
+  try {
+    await start();
+    const objects = await createTables();
+    await runQueries(objects);
+  } catch (e) {
+    throw new Error(e.message);
+  }
+}
+
+// run main and log any errors
+main().catch((e) => console.log(`Caught error: ${e}`));
+
+/**
+ * Synchronize all models with db
+ */
 async function start() {
   await connection.sync({
     logging: false,
     force: true, // drop tables each time
   });
-}
-
-start()
-  .then(() => {
-    console.log('Sequelize connected');
-    return createTables();
-  })
-  .then((objects) => {
-    console.log('Tables created');
-    runQueries(objects);
-  })
-  .catch((e) => console.log(e));
-
-/**
- * A space to run any queries
- * @param [] array of objects
- */
-async function runQueries(objects) {
-  [theRestaurant] = objects;
-
-  const results = await restaurant.get(); // get all restaurants
-  const result = await menu.get(theRestaurant); // get all menus that belong to a restaurant
-
-  console.log(`Found all restos: ${JSON.stringify(results)}`);
-  console.log(`Found one resto: ${JSON.stringify(result)}`);
-
-  // update the restuarant
-  await restaurant.update(theRestaurant, {
-    name: 'New name',
-    imagelink: 'Some new image',
-  });
-
-  // delete the restaurant
-  //await restaurant.del(theRestaurant);
 }
 
 /**
@@ -61,4 +46,27 @@ async function createTables() {
   await theMenu.addMenuItem(theMenuItem);
 
   return [theRestaurant, theMenu, theMenuItem];
+}
+
+/**
+ * A space to run any queries
+ * @param [] array of objects
+ */
+async function runQueries(objects) {
+  [theRestaurant] = objects;
+
+  const results = await restaurant.get(); // get all restaurants
+  const result = await menu.get(theRestaurant); // get all menus that belong to a restaurant
+
+  // update the restuarant
+  // await restaurant.update(theRestaurant, {
+  //   name: 'New name',
+  //   imagelink: 'Some new image',
+  // });
+
+  console.log(`**** Found all restos: ${JSON.stringify(results)}`);
+  console.log(`**** Found all menus: ${JSON.stringify(result)}`);
+
+  // delete the restaurant
+  //await restaurant.del(theRestaurant);
 }
