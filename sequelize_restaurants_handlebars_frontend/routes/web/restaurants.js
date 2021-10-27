@@ -4,8 +4,6 @@ const fetch = require('node-fetch');
 const config = require('../../config');
 const url = `${config.url}/api/restaurants`;
 
-console.log(url);
-
 // ADD NEW PAGE
 Router.get('/new', (req, res) => {
   res.render('newRestaurant');
@@ -14,18 +12,9 @@ Router.get('/new', (req, res) => {
 // EDIT PAGE
 Router.get('/:id/edit', async (req, res) => {
   try {
-    const restaurant = await api.getOne(req.params.id);
+    const response = await fetch(`${url}/${req.params.id}`);
+    const restaurant = await response.json();
     res.render('updateRestaurant', { restaurant });
-  } catch (error) {
-    return next(error);
-  }
-});
-
-// UPDATE
-Router.put('/:id', async (req, res, next) => {
-  try {
-    await api.update(req.body);
-    res.send('done');
   } catch (error) {
     return next(error);
   }
@@ -56,21 +45,12 @@ Router.get('/', async (req, res, next) => {
   }
 });
 
-// READ
+// READ BY ID
 Router.get('/:id', async (req, res, next) => {
   try {
-    const restaurant = await api.getOne(req.params.id);
+    const response = await fetch(`${url}/${req.params.id}`);
+    const restaurant = await response.json();
     res.render('restaurant', { restaurant });
-  } catch (error) {
-    return next(error);
-  }
-});
-
-// DELETE
-Router.delete('/:id', async (req, res, next) => {
-  try {
-    await api.deleteOne(req.params.id);
-    res.send('done');
   } catch (error) {
     return next(error);
   }

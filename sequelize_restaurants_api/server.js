@@ -8,6 +8,9 @@ const { connection } = require('./sequelize-connect');
 const restaurantRoutes = require('./routes/api/restaurant');
 const menuRoutes = require('./routes/api/menu');
 const menuitemRoutes = require('./routes/api/menuitem');
+const cors = require('cors');
+
+app.use(cors());
 
 // support req.body parsing
 app.use(express.json());

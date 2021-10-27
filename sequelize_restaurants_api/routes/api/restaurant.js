@@ -42,6 +42,7 @@ Router.get('/:id', async (req, res) => {
 
 // UPDATE
 Router.put('/:id', async (req, res) => {
+  console.log('here');
   try {
     const result = await Restaurant.update(
       {
