@@ -13,80 +13,86 @@ Router.post('/', async (req, res) => {
   } catch (e) {
     res.status(400).send(e.message);
   }
-});
+})
 
-// READ
-Router.get('/', async (req, res) => {
-  try {
-    const restaurants = await Restaurant.findAll({
-      include: [Menu],
-    });
-    res.send(restaurants);
-  } catch (e) {
-    res.status(400).send(e.message);
-  }
-});
+  // READ
+  .get('/', async (req, res) => {
+    try {
+      const restaurants = await Restaurant.findAll({
+        include: {
+          model: Menu,
+          as: 'menus',
+        },
+      });
+      res.send(restaurants);
+    } catch (e) {
+      res.status(400).send(e.message);
+    }
+  })
 
-// READ
-Router.get('/:id', async (req, res) => {
-  try {
-    const restaurant = await Restaurant.findOne({
-      where: { id: req.params.id },
-      include: [Menu],
-    });
-    res.send(restaurant);
-  } catch (e) {
-    res.status(400).send(e.message);
-  }
-});
-
-// UPDATE
-Router.put('/:id', async (req, res) => {
-  try {
-    const result = await Restaurant.update(
-      {
-        name: req.body.name,
-        imagelink: req.body.imagelink,
-      },
-      {
+  // READ
+  .get('/:id', async (req, res) => {
+    try {
+      const restaurant = await Restaurant.findOne({
         where: { id: req.params.id },
         include: [Menu],
-      }
-    );
-    res.send(result);
-  } catch (e) {
-    res.status(400).send(e.message);
-  }
-});
+      });
+      res.send(restaurant);
+    } catch (e) {
+      res.status(400).send(e.message);
+    }
+  })
 
-// UPDATE
-Router.patch('/:id', async (req, res) => {
-  restaurantData = {};
+  // UPDATE
+  .put('/:id', async (req, res) => {
+    try {
+      const result = await Restaurant.update(
+        {
+          name: req.body.name,
+          imagelink: req.body.imagelink,
+        },
+        {
+          where: { id: req.params.id },
+          include: {
+            model: Menu,
+            as: 'menu',
+          },
+        }
+      );
+      res.send(result);
+    } catch (e) {
+      res.status(400).send(e.message);
+    }
+  })
 
-  Object.keys(req.body).forEach((key) => {
-    restaurantData[key] = req.body[key];
+  // UPDATE
+  .patch('/:id', async (req, res) => {
+    restaurantData = {};
+
+    Object.keys(req.body).forEach((key) => {
+      restaurantData[key] = req.body[key];
+    });
+
+    try {
+      const result = await Restaurant.update(restaurantData, {
+        where: { id: req.params.id },
+      });
+      res.send(result);
+    } catch (e) {
+      res.status(400).send(e.message);
+    }
+  })
+
+  // DELETE
+  .delete('/:id', async (req, res) => {
+    try {
+      const result = await Restaurant.destroy({
+        where: { id: req.params.id },
+      });
+      res.send(`${result} row deleted`);
+    } catch (e) {
+      res.status(400).send(e.message);
+    }
   });
-
-  try {
-    const result = await Restaurant.update(restaurantData, {
-      where: { id: req.params.id },
-    });
-    res.send(result);
-  } catch (e) {
-    res.status(400).send(e.message);
-  }
-});
-
-// DELETE
-Router.delete('/:id', async (req, res) => {
-  try {
-    const result = await Restaurant.destroy({
-      where: { id: req.params.id },
-    });
-    res.send(`${result} row deleted`);
-  } catch (e) {
-    res.status(400).send(e.message);
-  }
-});
 
 module.exports = Router;

@@ -25,7 +25,7 @@ Menu.belongsTo(Restaurant);
 MenuItem.belongsTo(Menu);
 
 // one-to-many relationship
-Restaurant.hasMany(Menu);
+Restaurant.hasMany(Menu, { as: 'menus' });
 
 // one-to-many relationship
 Menu.hasMany(MenuItem);

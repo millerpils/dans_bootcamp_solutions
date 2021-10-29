@@ -13,18 +13,18 @@ Router.post('/', async (req, res) => {
   } catch (e) {
     res.status(400).send(e.message);
   }
-});
+})
 
-// READ
-Router.get('/', async (req, res) => {
-  try {
-    const menus = await Menu.findAll({
-      include: [MenuItem],
-    });
-    res.send(menus);
-  } catch (e) {
-    res.status(400).send(e.message);
-  }
-});
+  // READ
+  .get('/', async (req, res) => {
+    try {
+      const menus = await Menu.findAll({
+        include: [MenuItem],
+      });
+      res.send(menus);
+    } catch (e) {
+      res.status(400).send(e.message);
+    }
+  });
 
 module.exports = Router;
