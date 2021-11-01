@@ -7,58 +7,55 @@
   output: [[altered, related], [education, auctioned], [scar, cars, arcs], [lean]]
 */
 
-const sortWord = (word) => word.split('').sort().join('');
+const sortWord = (word) => word.split("").sort().join("");
 
-const cleanArr = [
-  'altered',
-  'cars',
-  'scar',
-  'auctioned',
-  'education',
-  'arcs',
-  'lean',
-  'related',
-];
+const anagram = (cleanArr) => {
+  let words = [];
+  let indexes = [];
 
-words = [];
-indexes = [];
+  for (let i = 0; i < cleanArr.length; i++) {
+    words.push(sortWord(cleanArr[i]));
+    indexes.push(i);
+  }
 
-for (let i = 0; i < cleanArr.length; i++) {
-  word = sortWord(cleanArr[i]);
-  words.push(word);
-  indexes.push(i);
-}
+  for (let i = 0; i < words.length; i++) {
+    for (let j = i + 1; j < words.length; j++) {
+      if (words[i] > words[j]) {
+        temp = words[i];
+        words[i] = words[j];
+        words[j] = temp;
 
-for (let i = 0; i < words.length; i++) {
-  for (let j = i + 1; j < words.length; j++) {
-    if (words[i] > words[j]) {
-      temp = words[i];
-      words[i] = words[j];
-      words[j] = temp;
-
-      temp = indexes[j];
-      indexes[j] = indexes[i];
-      indexes[i] = temp;
+        temp = indexes[j];
+        indexes[j] = indexes[i];
+        indexes[i] = temp;
+      }
     }
   }
-}
 
-finalArr = [];
-matchArr = [cleanArr[indexes[0]]];
+  let finalArr = [[cleanArr[indexes[0]]]];
 
-for (let i = 1; i < words.length; i++) {
-  if (words[i] === words[i - 1]) {
-    // if current word matches the one before it, store it
-    matchArr.push(cleanArr[indexes[i]]);
-  } else {
-    // if it doesn't match, push to final array
-    finalArr.push(matchArr);
-    // reset the array with next word to check
-    matchArr = [cleanArr[indexes[i]]];
+  for (let i = 1; i < words.length; i++) {
+    if (words[i] === words[i - 1]) {
+      // if current word matches, final current slot and push in latest
+      finalArr[finalArr.length - 1].push(cleanArr[indexes[i]]);
+    } else {
+      // if it doesn't match, push result to new arr slot
+      finalArr.push([cleanArr[indexes[i]]]);
+    }
   }
-}
 
-// push any stragglers
-finalArr.push(matchArr);
+  return finalArr;
+};
 
-console.log(finalArr);
+console.log(
+  anagram([
+    "altered",
+    "cars",
+    "scar",
+    "auctioned",
+    "education",
+    "arcs",
+    "lean",
+    "related",
+  ])
+);
