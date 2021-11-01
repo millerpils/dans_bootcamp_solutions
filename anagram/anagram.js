@@ -11,13 +11,13 @@ const sortWord = (word) => word.split('').sort().join('');
 
 const cleanArr = [
   'altered',
-  'education',
+  'cars',
   'scar',
   'auctioned',
-  'related',
-  'cars',
+  'education',
   'arcs',
   'lean',
+  'related',
 ];
 
 words = [];
@@ -43,12 +43,22 @@ for (let i = 0; i < words.length; i++) {
   }
 }
 
-/* resultArr = words.map( (el, index) => {
-  return cleanArr[indexes[index]]
-})
+finalArr = [];
+matchArr = [cleanArr[indexes[0]]];
 
-console.log(resultArr)
-  */
-console.log(cleanArr);
-console.log(words);
-console.log(indexes);
+for (let i = 1; i < words.length; i++) {
+  if (words[i] === words[i - 1]) {
+    // if current word matches the one before it, store it
+    matchArr.push(cleanArr[indexes[i]]);
+  } else {
+    // if it doesn't match, push to final array
+    finalArr.push(matchArr);
+    // reset the array with next word to check
+    matchArr = [cleanArr[indexes[i]]];
+  }
+}
+
+// push any stragglers
+finalArr.push(matchArr);
+
+console.log(finalArr);
