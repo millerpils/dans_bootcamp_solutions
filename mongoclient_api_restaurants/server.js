@@ -9,7 +9,7 @@ const dbName = 'restaurantsdb';
 // pass json bodies
 app.use(express.json());
 
-// create pizzas
+// create
 app.post('/api/restaurants', async (req, res) => {
   try {
     const result = await collection.insertOne(req.body);
@@ -19,20 +19,20 @@ app.post('/api/restaurants', async (req, res) => {
   }
 });
 
-// read all pizzas
+// read all
 app.get('/api/restaurants', async (req, res) => {
   const results = await collection.find({}).toArray();
   res.send(results);
 });
 
-// read one pizza
+// read one
 app.get('/api/restaurants/:id', async (req, res) => {
   const oId = new ObjectId(req.params.id);
   const result = await collection.findOne({ _id: oId });
   res.send(result);
 });
 
-// update a pizza
+// update
 app.put('/api/restaurants/:id', async (req, res) => {
   const oId = new ObjectId(req.params.id);
 
@@ -49,27 +49,7 @@ app.put('/api/restaurants/:id', async (req, res) => {
   res.send(update);
 });
 
-// Find a restaurant by ID with a menu title that equals the query param
-app.get('/api/restaurants/:restaurant_id/menus', async (req, res) => {
-  const restaurant_oId = new ObjectId(req.params.restaurant_id);
-
-  try {
-    const result = await collection.findOne({
-      _id: restaurant_oId,
-      menus: { $elemMatch: { title: req.query.title } },
-    });
-
-    if (!result) {
-      return res.status(404).send();
-    }
-
-    res.send(result);
-  } catch (e) {
-    res.send(e.message);
-  }
-});
-
-// delete a pizza
+// delete
 app.delete('/api/restaurants/:id', async (req, res) => {
   const oId = new ObjectId(req.params.id);
   const del = await collection.deleteOne({ _id: oId });
