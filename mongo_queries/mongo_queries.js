@@ -184,6 +184,8 @@ db.restaurants.updateOne(
   PUT /restaurant/:id/menus?name=menu+name 
   Replaces specific menu with title and items
 
+  Assumes all items will be sent and a title is sent
+
   Uses positional operator ($) to capture where
   in the menus array to update
 */
@@ -191,17 +193,62 @@ db.restaurants.updateOne(
 db.restaurants.updateOne(
   {
     _id: ObjectId('618aafb28204f3bcb45ded8f'),
-    'menus.title': 'Fish Menu',
+    'menus.title': 'margherita',
   },
   {
     $set: {
-      'menus.$.title': 'Fish Menu',
+      'menus.$.title': 'Pizzas',
       'menus.$.items': [
         {
-          name: 'Haddock',
+          name: 'Hot and spicy',
+          price: 21.99,
+        },
+        {
+          name: 'Margherita',
           price: 21.99,
         },
       ],
+    },
+  }
+);
+
+// $elemMAtch does the same as above
+db.restaurants.updateOne(
+  {
+    _id: ObjectId('618aafb28204f3bcb45ded8f'),
+    menus: {
+      $elemMatch: {
+        title: 'New Pizzas',
+      },
+    },
+  },
+  {
+    $set: {
+      'menus.$.title': 'Pizzas',
+      'menus.$.items': [
+        {
+          name: 'Hot & spicy',
+          price: 21.99,
+        },
+        {
+          name: 'Margherita',
+          price: 21.99,
+        },
+      ],
+    },
+  }
+);
+
+// push to an array by nominating the key of the array
+// find by id ofc
+// patch request to add a new menu?
+db.restaurants.update(
+  {
+    _id: ObjectId('618aafb28204f3bcb45ded8f'),
+  },
+  {
+    $push: {
+      menus: { title: 'some new menu', items: [] },
     },
   }
 );

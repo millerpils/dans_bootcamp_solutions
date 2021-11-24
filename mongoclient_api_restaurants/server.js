@@ -39,10 +39,7 @@ app.put('/api/restaurants/:id', async (req, res) => {
   const update = await collection.updateOne(
     { _id: oId },
     {
-      $set: {
-        name: req.body.name,
-        imagelink: req.body.imagelink,
-      },
+      $set: req.body,
     }
   );
 
@@ -54,6 +51,32 @@ app.delete('/api/restaurants/:id', async (req, res) => {
   const oId = new ObjectId(req.params.id);
   const del = await collection.deleteOne({ _id: oId });
   res.send(del);
+});
+
+// look into json patch
+
+/**
+ * This will patch any top level key. If the value of the key
+ * is an array, the code will concat that array with what's
+ * being sent.
+ *
+ * This solves the adding a new menu to the existing menus issue
+ */
+app.patch('/api/restaurants/:id', async (req, res) => {
+  const oId = new ObjectId(req.params.id);
+  let restaurant = await collection.findOne({ _id: oId });
+
+  for (let key in req.body) {
+    if (Array.isArray(restaurant[key])) {
+      restaurant[key] = restaurant[key].concat(req.body[key]);
+    } else {
+      restaurant[key] = req.body[key];
+    }
+  }
+
+  const result = await collection.updateOne({ _id: oId }, { $set: restaurant });
+
+  res.send(result);
 });
 
 // Call dbStart to start server
